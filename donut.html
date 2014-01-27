@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Donut Generator - mmmm donuts...</title>
+		<script src="http://www.chartjs.org/assets/Chart.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src='spectrum/spectrum.js'></script>
+		<link rel='stylesheet' href='spectrum/spectrum.css' />
+		<meta name = "viewport" content = "initial-scale = 1, user-scalable = no">
+		<style>
+		body {font-family: arial, helvetica, sans-serif;}
+		label {display:block;}
+			canvas{
+				float: left;
+				position: absolute;
+				top:0;
+				left: 0;
+			}
+			.stats {position: relative; margin:2em;}
+			.stats label {font-weight:bold; text-transform:capitalize; font-size: 1.5em; color: #666; position: relative; display: block;}
+			.value {position: relative; z-index: 10; float: left; font-size: 3.2em; color:green; font-weight: bold;}
+			.value span {font-size: 28px; position: relative; left: -.5em;}
+			.canvasWrapper {position: relative; z-index: 10; height:280px; width:280px; padding-left: 48px; padding-top:24px;}
+			.valueWrapper {position: relative; top: 40px; left: 32px;}
+			.col50 {float:left; width:50%; box-sizing:border-box; -moz-box-sizing:border-box;}
+
+			#changeChart > div {margin:.5em;}
+
+			.full-spectrum .sp-palette {
+max-width: 200px;
+}
+		</style>
+	</head>
+	<body>
+
+		<h2>Donut Chart Generator</h2>
+		<div class="col50" id="user_1">
+			<div class="stats salesPerc">
+        <div class="canvasWrapper">
+	        <div class="valueWrapper">
+	        	<label id="chartLabel"></label>
+		        <div class="value">
+		          <i></i>
+		          <span>
+			        	%
+			        </span>
+			      </div>
+		    	</div>
+        </div>
+        <canvas id="canvas_1" height="240" width="240"></canvas>
+      </div>
+    </div>
+
+    <div class="col50">
+    	<div id="changeChart">
+    		<div>
+    			<label>Text Label for Chart</label>
+    			<input type="text" id="textLabel" />
+    		</div>
+    		<div>
+	    		<label>Text Label Color</label>
+	    		<input type="text" id="labelColor" class="full" value="#333333" />
+	    	</div>
+    		<div>
+	    		<label>"Filled" Section %</label>
+	    		<input type="text" id="perc" />
+	    	</div>
+    		<div>
+	    		<label>"Filled" Section Color</label>
+	    		<input type="text" id="filledColor" class="full" value="#b1f0a8" />
+	    	</div>
+    		<div>
+	    		<label>"Empty" Section Color</label>
+	    		<input type="text" id="emptyColor" class="full" value="#e5e5e5" />
+	    	</div>
+	    	<div>
+    			<label>Percent Value Color</label>
+    			<input type="text" id="percValColor" class="full" value="green" />
+    		</div>
+    		<div>
+	    		<input type="submit" id="submitBtn" value="update" />
+    	</div>
+    </div>
+
+    <script>
+    	$('#submitBtn').click(function() {
+    		var salesPerc = parseInt($('#perc').val());
+		    var unsoldPercentage = (100-salesPerc);
+		    // color for "filled section"
+				var filledColor = $('#filledColor').val();
+				// color for "empty section"
+				var emptyColor = $('#emptyColor').val();
+				var pieData = [
+						{
+							value: salesPerc,
+							color: filledColor
+						},
+						{
+							value : unsoldPercentage,
+							color : emptyColor
+						}
+
+					];
+
+				var myPie = new Chart(document.getElementById("canvas_1").getContext("2d")).Doughnut(pieData);
+				$('.value i').html(salesPerc);
+
+				// label for chart
+				if ($('#textLabel').val().length == 0) {
+					myLabel = "&nbsp;"
+				}
+				else {
+					myLabel = $('#textLabel').val();
+				}
+				
+				// label text
+				$('#chartLabel').html(myLabel);
+
+				// label color
+				var labelColor = $('#labelColor').val();
+				$('#chartLabel').css({ "color": labelColor});
+
+				// % value color
+				var percValColor = $('#percValColor').val();
+				$('.value').css({ "color": percValColor});
+    	}
+
+    		);
+    
+
+
+	</script>
+
+	<script>
+	//color picker
+
+		$(".full").spectrum({
+	    showInput: true,
+	    className: "full-spectrum",
+	    showInitial: true,
+	    showPalette: true,
+	    showSelectionPalette: true,
+	    maxPaletteSize: 10,
+	    preferredFormat: "hex",
+	    localStorageKey: "spectrum.demo",
+	    move: function (color) {
+	        
+	    },
+	    show: function () {
+	    
+	    },
+	    beforeShow: function () {
+	    
+	    },
+	    hide: function () {
+	    
+	    },
+	    change: function() {
+	        
+	    },
+	    palette: [
+	        ["rgb(0, 0, 0)", "rgb(177, 240, 168)", "rgb(0,128,0)",  "rgb(229, 229, 229)", "rgb(102, 102, 102)",
+	        "rgb(204, 204, 204)", "rgb(217, 217, 217)","rgb(255, 255, 255)"]
+	        
+	    ]
+		});
+	</script>
+
+ 	
+	</body>
+</html>
